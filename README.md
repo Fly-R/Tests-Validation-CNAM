@@ -1,93 +1,134 @@
-# Tests-TP1
+# TP1
 
 
+## I - Les difficultés liées à la validation
 
-## Getting started
+Dans l'ensemble, le jeu fonctionne correctement, bien que quelques bugs soient présents et peuvent être détectés dès la première utilisation. Cependant, la structure du code rend difficile toute évolution simple, voire l'intégration de tests automatisés pour une avoir une certaines couverture du code.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+### Erreur détectés à l'utilisation
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+- La condition de victoire sur la première ligne du morpion est incorrecte.
+- L'affichage de la grille du morpion est incorrect.
+- Le Puissance 4 ne vérifie pas toutes les diagonales dans sa condition de victoire.
 
-## Add your files
+### Commentaires sur le code actuel
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+1. Les méthodes dans le code existant sont très longues, ce qui les rend difficiles à comprendre et à maintenir. Des méthodes trop longues sont souvent difficiles à tester et à réutiliser.
 
+```c#
+ public void tourJoueur() { ... } ~ 70 lignes
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/cnam-romain/tests-tp1.git
-git branch -M main
-git push -uf origin main
+
+2. La complexité cyclomatique est important ce qui rent le code complexe et difficile à suivre. Les nombreux switch et if imbriqués augmentent cette complexité ainsi que l'utilisation de goto qui est une pratique à éviter.
+
+```c#
+static void Main(string[] args)
+{
+    Console.WriteLine("Jouer à quel jeu ? Taper [X] pour le morpion et [P] pour le puissance 4.");
+GetKey:
+    switch (Console.ReadKey(true).Key)
+    {
+        case ConsoleKey.X:
+            Morpion morpion = new Morpion();
+            morpion.BoucleJeu();
+            break;
+        case ConsoleKey.P:
+            PuissanceQuatre puissanceQuatre = new PuissanceQuatre();
+            puissanceQuatre.BoucleJeu();
+            break;
+        default:
+            goto GetKey;
+    }
+    Console.WriteLine("Jouer à un autre jeu ? Taper [R] pour changer de jeu. Taper [Echap] pour quitter.");
+GetKey1:
+    switch (Console.ReadKey(true).Key)
+    {...}
+}
 ```
 
-## Integrate with your tools
+3. Les méthodes sans retour ne renvoient aucune valeur ce qui les rend difficiles à tester. Pour tester une méthode, il est souvent nécessaire de vérifier son effet sur l'état de l'application ou de vérifier la valeur qu'elle renvoie.
 
-- [ ] [Set up project integrations](https://gitlab.com/cnam-romain/tests-tp1/-/settings/integrations)
+```c#
+public void BoucleJeu() {...}
+public void tourJoueur() {...}
+public void tourJoueur2() {...}
+public void affichePlateau() {...}
+```
 
-## Collaborate with your team
+4. Du code dupliqué est souvent présent dans ce projet, ce qui augmente la maintenance nécessaire et rend le code plus fragile aux erreurs. Le code mort, qui ne contribue pas à la fonctionnalité de l'application, devrait être supprimé pour améliorer la lisibilité et la maintenabilité du code.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+```c#
+public void tourJoueur() {...}
+public void tourJoueur2() {...}
+```
 
-## Test and Deploy
+5. Les classes du projet ont des dépendances fortes entre elles, ce qui les rend difficiles à réutiliser et à tester individuellement. Une dépendance forte augmente également le couplage entre les classes, ce qui rend le code plus rigide et moins flexible. Il faudrait priviligié l'injection de dépendance.
 
-Use the built-in continuous integration in GitLab.
+6. Le code utilise des types primitifs pour représenter des concepts métier, ce qui peut rendre le code moins expressif et plus sujet aux erreurs. Une meilleure utilisation des concepts de la programmation orientée objet pourrait améliorer la clarté et la maintenabilité du code.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+```c#
+ grille = new char[3, 3]
+ {
+     { ' ', ' ', ' '},
+     { ' ', ' ', ' '},
+     { ' ', ' ', ' '},
+ };
+```
 
-***
+7. Le code existant ne tire pas pleinement parti des avantages de la programmation orientée objet, tels que l'encapsulation, l'abstraction, l'héritage et le polymorphisme. Une utilisation plus efficace de ces concepts pourrait rendre le code plus modulaire, réutilisable et facile à comprendre.
 
-# Editing this README
+8. Les interactions avec la console rendent le code difficile à tester automatiquement. Les méthodes qui dépendent de la console pour les entrées/sorties sont difficiles à tester car elles nécessitent une interaction humaine. Cette dépendance doit être réduite pour faciliter l'écriture de tests automatisés.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
 
-## Suggestions for a good README
+## II - Les méthodes de résolution de ces problèmes
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+### Objectifs
 
-## Name
-Choose a self-explaining name for your project.
+- Refactoriser une partie du code pour le rendre compatible avec des tests automatisés.
+- Ajouter des tests sur le projet afin de vérifier si un changement n'a pas impacté le fonctionnement normal du projet
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+Avec les premiers tests sur le code de base (avant refactoring), on retrouve les erreurs remarquées lors de l'utilisation (condition de victoire incorrect pour le morpion et Puissance 4). Cependant, le problème d'affichage de la grille du morpion ne peut pas être remonté par les tests car l'erreur se situe au niveau de l'affichage dans la console, ce qui ne peut être testé.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+### Solution de refactoring
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+Il faudrait mettre en place une interface en C# qui répertorie toutes les interactions entre l'utilisateur et l'application. Cette interface devrait retourner `void` pour les méthodes qui se contentent de mettre à jour l'interface utilisateur, et un `enum` pour les méthodes qui fournissent un retour sur une action de l'utilisateur. Ensuite, une classe de substitution dans nos tests implémentera cette interface, permettant ainsi de contrôler les actions que serait censé faire un utilisateur.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+<br>
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+Pour les modes de jeu `Morpion` et `PuissanceQuatre`, il faudrait mettre en place une interface C# qui définit des méthodes de comportement telles que :
+- La vérification de la victoire pour un joueur.
+- La vérification de l'égalité.
+- Vérifier si un placement est valide.
+- Appliquer le changement de position d'un pion (faire tomber le pion dans le Puissance4).
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+Ces différentes méthodes prendront une grille en paramètre, ce qui permettra de vérifier leur bon fonctionnement avec des grilles prédéfinies dans nos tests.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+<br>
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+Pour limiter l'utilisation de primitives, on peut mettre en place une classe représentant la grille de jeu avec des méthodes permettant de récupérer rapidement des informations sur la grille comme :
+- Les valeurs sur une ligne/colonne,
+- Les valeurs sur une diagonale,
+-L es positions qui sont vides, etc.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+La classe posséderait un tableau 2D avec comme type un `enum` composé de 3 valeurs : `Vide`, `X` et `O`.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+<br>
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+Il y aura une classe principale chargée d'exécuter les différentes méthodes de notre mode de jeu en utilisant l'interface utilisateur fournie pour dérouler le jeu choisi.
 
-## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+## III - Le développement des fonctionnalités manquantes
+
+### « Brancher » un joueur contrôlé par l’ordinateur
+
+Pour l'ajout d'une IA, il faudra ajouter une méthode dans l'interface implémentée par les classes `Morpion` et `PuissanceQuatre` afin de gérer le placement du pion de l'IA en fonction du mode de jeu. 
+
+On ajoutera un attribut à la classe représentant le joueur pour indiquer s'il s'agit d'un bot ou d'un joueur, puis on ajoutera la logique dans la classe responsable du déroulement du jeu afin d'appeler la méthode de placement classique du jeu (pour le joueur) ou le mode de placement pour l'IA.
+
+### Système permettant l’historisation et la persistance
+
+Pour la sauvegarde, il faudra créer une classe qui représente la structure d'une sauvegarde dans un fichier JSON. 
+
+On ajoutera dans l'interface C# de l'interface utilisateur, les méthodes d'interaction avec l'utilisateur nécessaires pour gérer la sauvegarde et le chargement d'une ancienne sauvegarde. 
+
+Il y aura une classe qui se chargera de l'écriture et de la lecture du fichier de sauvegarde. Puis on mettra à jour la logique du programme pour charger un fichier de sauvegarde au lancement de l'application et en sauvegarder un nouveau au moment de quitter une partie.
