@@ -10,11 +10,14 @@ namespace MorpionApp.Abstractions
         void DisplayWinner(Player player);
         void DisplayDraw();
         void ClearScreen();
+        void NoSave();
 
         UserInput AskForGameMode();
         UserInput AskForReplay();
         UserInput AskForPlayingAgainstAI();
         UserInput AskForPlay(Grid grid, out Position position);
+        UserInput AskForSave();
+        UserInput AskForLoadSave();
 
     }
 }

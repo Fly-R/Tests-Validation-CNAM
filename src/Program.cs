@@ -9,24 +9,50 @@ namespace MorpionApp
 {
     public class Program
     {
+        private static readonly IUserInterface ui = new CLI();
         static void Main(string[] args)
         {
-            IUserInterface ui = new CLI();
             do
             {
-                IGameMode gameMode;
-                gameMode = ui.AskForGameMode() switch
+                if (ui.AskForLoadSave() == UserInput.LoadSave)
                 {
-                    UserInput.PlayMorpion => new Morpion(),
-                    UserInput.PlayPuissance4 => new PuissanceQuatre(),
-                    _ => throw new NotImplementedException()
-                };
-
-                List<Player> players = PlayerFactory.CreatePlayers(ui.AskForPlayingAgainstAI());
-
-                new GameController(ui, gameMode, players).Play();
+                    LoadGame();
+                }
+                else
+                {
+                    StartNewGame();
+                }
 
             } while (ui.AskForReplay() == UserInput.Replay);
+        }
+
+        private static void LoadGame()
+        {
+            try
+            {
+                Save save = SaveController.LoadGame(GameController.DEFAULT_SAVE_PATH);
+                new GameController(ui, save).Play();
+            }
+            catch (Exception _)
+            {
+                ui.NoSave();
+                StartNewGame();
+            }
+        }
+
+        private static void StartNewGame()
+        {
+            IGameMode gameMode = ui.AskForGameMode() switch
+            {
+                UserInput.PlayMorpion => new Morpion(),
+                UserInput.PlayPuissance4 => new PuissanceQuatre(),
+                _ => throw new NotImplementedException()
+            };
+
+            UserInput playerMode = ui.AskForPlayingAgainstAI();
+            List<Player> players = PlayerFactory.CreatePlayers(playerMode);
+
+            new GameController(ui, gameMode, players).Play();
         }
     }
 }

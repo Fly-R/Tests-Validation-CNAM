@@ -71,35 +71,35 @@ namespace Tests
         [Fact]
         public void CheckEquality()
         {
-            //_morpion.grille = new char[GRID_HEIGHT, GRID_WIDTH]
-            //{
-            //    {'X', 'O', 'X'},
-            //    {'X', 'O', 'X'},
-            //    {'O', 'X', 'O'}
-            //};
-            //Assert.False(_morpion.verifVictoire('X'));
-            //Assert.False(_morpion.verifVictoire('O'));
-            //Assert.True(_morpion.verifEgalite());
+            Grid grid = new Grid( new char[GRID_HEIGHT, GRID_WIDTH]
+            {
+                {'X', 'O', 'X'},
+                {'X', 'O', 'X'},
+                {'O', 'X', 'O'}
+            });
+            Assert.False(_morpion.CheckForWin(grid, GridValue.X));
+            Assert.False(_morpion.CheckForWin(grid, GridValue.O));            
+            Assert.True(_morpion.CheckForDraw(grid));
 
-            //_morpion.grille = new char[GRID_HEIGHT, GRID_WIDTH]
-            //{
-            //    {'X', 'O', 'X'},
-            //    {'X', 'O', 'X'},
-            //    {'O', ' ', 'O'}
-            //};
-            //Assert.False(_morpion.verifVictoire('X'));
-            //Assert.False(_morpion.verifVictoire('O'));
-            //Assert.True(_morpion.verifEgalite());
+            grid = new Grid(new char[GRID_HEIGHT, GRID_WIDTH]
+            {
+                {'X', 'O', 'X'},
+                {'X', 'O', 'X'},
+                {'O', ' ', 'O'}
+            });
+            Assert.False(_morpion.CheckForWin(grid, GridValue.X));
+            Assert.False(_morpion.CheckForWin(grid, GridValue.O));            
+            Assert.True(_morpion.CheckForDraw(grid));
 
-            //_morpion.grille = new char[GRID_HEIGHT, GRID_WIDTH]
-            //{
-            //    {'O', 'O', 'X'},
-            //    {'X', 'X', 'O'},
-            //    {' ', 'O', 'X'}
-            //};
-            //Assert.False(_morpion.verifVictoire('X'));
-            //Assert.False(_morpion.verifVictoire('O'));
-            //Assert.False(_morpion.verifEgalite());
+            grid = new Grid(new char[GRID_HEIGHT, GRID_WIDTH]
+            {
+                {'O', 'O', 'X'},
+                {'X', 'X', 'O'},
+                {' ', 'O', 'X'}
+            });
+            Assert.False(_morpion.CheckForWin(grid, GridValue.X));
+            Assert.False(_morpion.CheckForWin(grid, GridValue.O));
+            Assert.False(_morpion.CheckForDraw(grid));
             Assert.True(false);
         }
 

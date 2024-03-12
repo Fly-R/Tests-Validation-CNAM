@@ -6,6 +6,8 @@ namespace MorpionApp.Controller
 {
     public class GameController
     {
+        public static readonly string DEFAULT_SAVE_PATH = "save.json";
+
         public GameController(IUserInterface userInterface, IGameMode gameMode, List<Player> players)
         {
             _userInterface = userInterface;
@@ -15,10 +17,24 @@ namespace MorpionApp.Controller
             _playerIndex = 0;
         }
 
+        public GameController(IUserInterface userInterface, Save save)
+        {
+            _userInterface = userInterface;
+            _gameMode = save.GameMode switch
+            {
+                nameof(Morpion) => new Morpion(),
+                nameof(PuissanceQuatre) => new PuissanceQuatre(),
+                _ => throw new NotImplementedException()
+            };
+            _players = save.Players;
+            _grid = new Grid(save.Grid);
+            tourDuJoueur = save.CurrentPlayerIndex == 0;
+        }
+
 
         public void Play()
         {
-            while (quiterJeu)
+            while (!quiterJeu)
             {
                 Player player = tourDuJoueur ? _players[0] : _players[1];
 
@@ -37,9 +53,10 @@ namespace MorpionApp.Controller
                     break;
                 }
                 tourDuJoueur = !tourDuJoueur;
-            }
+            }            
         }
 
+        #region PRIVATE
         private void tourJoueur(Player player)
         {
             _userInterface.DiplayPlayer(player);
@@ -61,6 +78,7 @@ namespace MorpionApp.Controller
             {
                 if (_userInterface.AskForPlay(_grid, out position) == UserInput.Leave)
                 {
+                    SaveGame();
                     quiterJeu = true;
                     break;
                 }
@@ -73,7 +91,22 @@ namespace MorpionApp.Controller
             return _gameMode.AIPlay(_grid);
         }
 
-        #region PRIVATAE
+        private void SaveGame()
+        {
+            if(_userInterface.AskForSave() == UserInput.Save)
+            {
+                Save save = new Save()
+                {
+                    Players = _players,
+                    CurrentPlayerIndex = tourDuJoueur ? 0 : 1,
+                    Grid = _grid.ToCharArray(),
+                    GameMode = _gameMode.GetType().Name
+                };
+                SaveController.SaveGame(save, DEFAULT_SAVE_PATH);
+            }
+        }
+
+       
 
         private readonly IUserInterface _userInterface;
         private readonly IGameMode _gameMode;
@@ -82,7 +115,7 @@ namespace MorpionApp.Controller
 
         private int _playerIndex;
 
-        private bool quiterJeu = true;
+        private bool quiterJeu = false;
         private bool tourDuJoueur = true;
         #endregion
     }

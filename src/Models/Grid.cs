@@ -15,6 +15,20 @@ namespace MorpionApp.Models
             InitEmptyGrid();
         }
 
+        public Grid(char[,] chars)
+        {
+            Rows = chars.GetLength(0);
+            Columns = chars.GetLength(1);
+            _grid = new GridValue[Rows, Columns];
+            for (int row = 0; row < Rows; row++)
+            {
+                for (int column = 0; column < Columns; column++)
+                {
+                    _grid[row, column] = (GridValue)chars[row, column];
+                }
+            }
+        }
+
         public bool IsCellEmpty(Position position)
         {
             if (!IsPositionValid(position))
@@ -105,6 +119,19 @@ namespace MorpionApp.Models
                     }
                 }
             }
+        }
+
+        public char[,] ToCharArray()
+        {
+            char[,] chars = new char[Rows, Columns];
+            for (int row = 0; row < Rows; row++)
+            {
+                for (int column = 0; column < Columns; column++)
+                {
+                    chars[row, column] = (char)_grid[row, column];
+                }
+            }
+            return chars;
         }
 
         #region PRIVATE

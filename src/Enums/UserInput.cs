@@ -10,5 +10,9 @@
         PlayPuissance4,
         PlayAgainstAI,
         PlayAgainstHuman,
+        LoadSave,
+        StartNewGame,
+        Save,
+        Cancel
     }
 }

@@ -129,6 +129,51 @@ namespace MorpionApp.UI
             Console.Clear();
         }
 
+        public void NoSave()
+        {
+            Console.WriteLine("Aucune sauvegarde");
+        }
+
+        public UserInput AskForSave()
+        {
+            do
+            {
+                Console.WriteLine("Sauvegarder la partie en cours  ? Oui [O] / Non [N]");
+                switch (Console.ReadKey(true).Key)
+                {
+                    case ConsoleKey.O:
+                        return UserInput.Save;
+                    case ConsoleKey.N:
+                        return UserInput.Leave;
+                    case ConsoleKey.Escape:
+                        return UserInput.Leave;
+                    default:
+                        Console.WriteLine("Entrée invalide.");
+                        break;
+                }
+            } while (true);
+        }
+
+        public UserInput AskForLoadSave()
+        {
+            do
+            {
+                Console.WriteLine("Voulez-vous charger une sauvegarde ? Oui [O] / Non [N]");
+                switch (Console.ReadKey(true).Key)
+                {
+                    case ConsoleKey.O:
+                        return UserInput.LoadSave;
+                    case ConsoleKey.N:
+                        return UserInput.StartNewGame;
+                    case ConsoleKey.Escape:
+                        return UserInput.Leave;
+                    default:
+                        Console.WriteLine("Entrée invalide.");
+                        break;
+                }
+            } while (true);
+        }
+
         #region PRIVATE
         private int _cursorRow = 0;
         private int _cursorColumn = 0;
