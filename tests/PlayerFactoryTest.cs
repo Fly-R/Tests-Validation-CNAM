@@ -14,10 +14,10 @@ namespace Tests
 
             Assert.Equal(2, players.Count);
 
-            Assert.Equal(GridValue.Player1, players[0].Value);
+            Assert.Equal(GridValue.X, players[0].Value);
             Assert.False(players[0].IsBot);
 
-            Assert.Equal(GridValue.Player2, players[1].Value);
+            Assert.Equal(GridValue.O, players[1].Value);
             Assert.True(players[1].IsBot);
         }
 
@@ -28,10 +28,10 @@ namespace Tests
 
             Assert.Equal(2, players.Count);
 
-            Assert.Equal(GridValue.Player1, players[0].Value);
+            Assert.Equal(GridValue.X, players[0].Value);
             Assert.False(players[0].IsBot);
 
-            Assert.Equal(GridValue.Player2, players[1].Value);
+            Assert.Equal(GridValue.O, players[1].Value);
             Assert.False(players[1].IsBot);
         }
     }

@@ -35,9 +35,9 @@ namespace Tests
                     Grid grid = new Grid(_puissance4.Rows, _puissance4.Columns);
                     for (int column = 0; column < 4; column++)
                     {
-                        grid.SetCellValue(line, column + linePosibility, GridValue.Player1);                        
+                        grid.SetCellValue(line, column + linePosibility, GridValue.X);                        
                     }
-                    Assert.True(_puissance4.CheckForWin(grid, GridValue.Player1));
+                    Assert.True(_puissance4.CheckForWin(grid, GridValue.X));
                 }
             }
         }
@@ -50,9 +50,9 @@ namespace Tests
                 Grid grid = new Grid(_puissance4.Rows, _puissance4.Columns);
                 for (int line = 0; line < GRID_HEIGHT; line++)
                 {                    
-                    grid.SetCellValue(line, column, GridValue.Player1);
+                    grid.SetCellValue(line, column, GridValue.X);
                 }
-                Assert.True(_puissance4.CheckForWin(grid, GridValue.Player1));
+                Assert.True(_puissance4.CheckForWin(grid, GridValue.X));
             }
         }
 
@@ -64,9 +64,9 @@ namespace Tests
                 Grid grid = new Grid(_puissance4.Rows, _puissance4.Columns);
                 for (int line = 0; line < GRID_HEIGHT; line++)
                 {                    
-                    grid.SetCellValue(line, posibility + line, GridValue.Player1);
+                    grid.SetCellValue(line, posibility + line, GridValue.X);
                 }
-                Assert.True(_puissance4.CheckForWin(grid, GridValue.Player1));
+                Assert.True(_puissance4.CheckForWin(grid, GridValue.X));
             }
         }
 
@@ -79,10 +79,10 @@ namespace Tests
                 int column = 0;
                 for (int line = GRID_HEIGHT - 1; line >= 0; line--)
                 {                    
-                    grid.SetCellValue(line, posibility + column, GridValue.Player1);
+                    grid.SetCellValue(line, posibility + column, GridValue.X);
                     column++;
                 }
-                Assert.True(_puissance4.CheckForWin(grid, GridValue.Player1));
+                Assert.True(_puissance4.CheckForWin(grid, GridValue.X));
             }
         }
 
@@ -117,16 +117,16 @@ namespace Tests
         {
             Grid grid = new Grid(3, 3);
 
-            grid.SetCellValue(2, 0, GridValue.Player1);
-            grid.SetCellValue(2, 1, GridValue.Player1);
-            grid.SetCellValue(2, 2, GridValue.Player1);
+            grid.SetCellValue(2, 0, GridValue.X);
+            grid.SetCellValue(2, 1, GridValue.X);
+            grid.SetCellValue(2, 2, GridValue.X);
 
-            grid.SetCellValue(1, 0, GridValue.Player1);
-            grid.SetCellValue(1, 1, GridValue.Player1);
-            grid.SetCellValue(1, 2, GridValue.Player1);
+            grid.SetCellValue(1, 0, GridValue.X);
+            grid.SetCellValue(1, 1, GridValue.X);
+            grid.SetCellValue(1, 2, GridValue.X);
             
-            grid.SetCellValue(0, 1, GridValue.Player1);
-            grid.SetCellValue(0, 2, GridValue.Player1);
+            grid.SetCellValue(0, 1, GridValue.X);
+            grid.SetCellValue(0, 2, GridValue.X);
 
             Position position = _puissance4.AIPlay(grid);
 

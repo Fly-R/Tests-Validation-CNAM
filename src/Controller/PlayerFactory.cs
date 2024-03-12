@@ -19,8 +19,8 @@ namespace MorpionApp.Controllers
         {
             return
             [
-                new Player("Player1", GridValue.Player1, false),
-                new Player("IA", GridValue.Player2, true)
+                new Player("Player1", GridValue.X, false),
+                new Player("IA", GridValue.O, true)
             ];
         }
 
@@ -28,8 +28,8 @@ namespace MorpionApp.Controllers
         {
             return
            [
-               new Player("Joueur 1", GridValue.Player1, false),
-               new Player("Joueur 2", GridValue.Player2, false)
+               new Player("Joueur 1", GridValue.X, false),
+               new Player("Joueur 2", GridValue.O, false)
            ];
         }
     }

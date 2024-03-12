@@ -7,36 +7,37 @@ namespace MorpionApp.UI
     public class CLI : IUserInterface
     {
         public UserInput AskForPlay(Grid grid, out Position position)
-        {
-            position = new();
+        {            
             Console.WriteLine("Choisir une case valide est appuyer sur [Entrer]");
             do
             {
                 ClearScreen();
                 DisplayGrid(grid);
-                Console.SetCursorPosition(position.Column * 4 + 1, position.Row);
+                Console.SetCursorPosition(_cursorColumn * 4 + 1, _cursorRow);
 
                 switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.RightArrow:
-                        position.Column = (position.Column + 1) % grid.Columns;
+                        _cursorColumn = (_cursorColumn + 1) % grid.Columns;
                         break;
                     case ConsoleKey.LeftArrow:
-                        position.Column--;
-                        if (position.Column < 0) position.Column = grid.Columns - 1;
+                        _cursorColumn--;
+                        if (_cursorColumn < 0) _cursorColumn = grid.Columns - 1;
                         break;
 
                     case ConsoleKey.UpArrow:
-                        position.Row--;
-                        if (position.Row < 0) position.Row = grid.Rows - 1;
+                       _cursorRow--;
+                        if (_cursorRow < 0) _cursorRow = grid.Rows - 1;
                         break;
 
                     case ConsoleKey.DownArrow:
-                        position.Row = (position.Row + 1) % grid.Rows;
+                        _cursorRow = (_cursorRow + 1) % grid.Rows;
                         break;
                     case ConsoleKey.Enter:
+                        position = new Position(_cursorRow, _cursorColumn);
                         return UserInput.Played;
                     case ConsoleKey.Escape:
+                        position = new Position(0, 0);
                         return UserInput.Leave;
                 }
             } while (true);
@@ -102,7 +103,7 @@ namespace MorpionApp.UI
 
         public void DiplayPlayer(Player player)
         {
-            Console.WriteLine($"C'est au tour de {player.Name} ({player.Value.ToSymbol()})");
+            Console.WriteLine($"C'est au tour de {player.Name} ({player.Value})");
         }
 
         public void DisplayDraw()
@@ -114,7 +115,7 @@ namespace MorpionApp.UI
         {
             for (int row = 0; row < grid.Rows; row++)
             {
-                Console.WriteLine(string.Join(" | ", grid.GetRow(row).Select(item => item.ToSymbol())));
+                Console.WriteLine(string.Join(" | ", grid.GetRow(row).Select(item => (char)item)));
             }
         }
 
@@ -127,5 +128,10 @@ namespace MorpionApp.UI
         {
             Console.Clear();
         }
+
+        #region PRIVATE
+        private int _cursorRow = 0;
+        private int _cursorColumn = 0;
+        #endregion
     }
 }

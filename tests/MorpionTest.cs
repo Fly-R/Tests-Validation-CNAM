@@ -32,9 +32,9 @@ namespace Tests
                 Grid grid = new Grid(_morpion.Rows, _morpion.Columns);                
                 for (int column = 0; column < _morpion.Columns; column++)
                 {
-                    grid.SetCellValue(row, column, GridValue.Player1);
+                    grid.SetCellValue(row, column, GridValue.X);
                 }
-                Assert.True(_morpion.CheckForWin(grid, GridValue.Player1));
+                Assert.True(_morpion.CheckForWin(grid, GridValue.X));
             }
         }
 
@@ -46,9 +46,9 @@ namespace Tests
                 Grid grid = new Grid(_morpion.Rows, _morpion.Columns);
                 for (int row = 0; row < _morpion.Rows; row++)
                 {                    
-                    grid.SetCellValue(row, column, GridValue.Player1);
+                    grid.SetCellValue(row, column, GridValue.X);
                 }
-                Assert.True(_morpion.CheckForWin(grid, GridValue.Player1));
+                Assert.True(_morpion.CheckForWin(grid, GridValue.X));
             }
         }
 
@@ -56,16 +56,16 @@ namespace Tests
         public void CheckWin_CorrectWin_Diag()
         {
             Grid grid = new Grid(_morpion.Rows, _morpion.Columns);
-            grid.SetCellValue(0, 0, GridValue.Player1);
-            grid.SetCellValue(1, 1, GridValue.Player1);
-            grid.SetCellValue(2, 2, GridValue.Player1);      
-            Assert.True(_morpion.CheckForWin(grid, GridValue.Player1));
+            grid.SetCellValue(0, 0, GridValue.X);
+            grid.SetCellValue(1, 1, GridValue.X);
+            grid.SetCellValue(2, 2, GridValue.X);      
+            Assert.True(_morpion.CheckForWin(grid, GridValue.X));
 
             grid = new Grid(_morpion.Rows, _morpion.Columns);
-            grid.SetCellValue(0, 2, GridValue.Player1);
-            grid.SetCellValue(1, 1, GridValue.Player1);
-            grid.SetCellValue(2, 0, GridValue.Player1);       
-            Assert.True(_morpion.CheckForWin(grid, GridValue.Player1));
+            grid.SetCellValue(0, 2, GridValue.X);
+            grid.SetCellValue(1, 1, GridValue.X);
+            grid.SetCellValue(2, 0, GridValue.X);       
+            Assert.True(_morpion.CheckForWin(grid, GridValue.X));
         }
 
         [Fact]
@@ -108,9 +108,9 @@ namespace Tests
         {
             Grid grid = new Grid(2, 2);
 
-            grid.SetCellValue(0,0, GridValue.Player1);
-            grid.SetCellValue(0,1, GridValue.Player1);
-            grid.SetCellValue(1,0, GridValue.Player1);
+            grid.SetCellValue(0,0, GridValue.X);
+            grid.SetCellValue(0,1, GridValue.X);
+            grid.SetCellValue(1,0, GridValue.X);
 
             Position position = _morpion.AIPlay(grid);
 

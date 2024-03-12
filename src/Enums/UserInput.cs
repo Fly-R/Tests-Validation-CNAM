@@ -2,6 +2,7 @@
 {
     public enum UserInput
     {
+        None,
         Replay,
         Leave,
         Played,
