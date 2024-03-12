@@ -13,6 +13,7 @@ namespace MorpionApp.Abstractions
 
         UserInput AskForGameMode();
         UserInput AskForReplay();
+        UserInput AskForPlayingAgainstAI();
         UserInput AskForPlay(Grid grid, out Position position);
 
     }

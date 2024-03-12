@@ -6,15 +6,11 @@ namespace MorpionApp.Controller
 {
     public class GameController
     {
-        public GameController(IUserInterface userInterface, IGameMode gameMode)
+        public GameController(IUserInterface userInterface, IGameMode gameMode, List<Player> players)
         {
             _userInterface = userInterface;
             _gameMode = gameMode;
-            _players = new List<Player>()
-                {
-                    new Player("Joueur 1", GridValue.Player1),
-                    new Player("Joueur 2", GridValue.Player2)
-                };
+            _players = players;
             _grid = new Grid(_gameMode.Rows, _gameMode.Columns);
             _playerIndex = 0;
         }
@@ -22,7 +18,7 @@ namespace MorpionApp.Controller
 
         public void Play()
         {
-            while (!quiterJeu)
+            while (quiterJeu)
             {
                 Player player = tourDuJoueur ? _players[0] : _players[1];
 
@@ -49,6 +45,18 @@ namespace MorpionApp.Controller
             _userInterface.DiplayPlayer(player);
 
             Position position;
+            if(player.IsBot)
+                position = AIPlay();
+            else
+                position = HumanPlay();
+
+            _gameMode.ApplyGameRulesBeforePlacement(_grid, ref position);
+            _grid.SetCellValue(position, player.Value);
+        }
+
+        private Position HumanPlay()
+        {
+            Position position;
             do
             {
                 if (_userInterface.AskForPlay(_grid, out position) == UserInput.Leave)
@@ -57,10 +65,12 @@ namespace MorpionApp.Controller
                     break;
                 }
             } while (!_gameMode.IsValidInput(_grid, position));
+            return position;
+        }
 
-
-            _gameMode.ApplyGameRulesBeforePlacement(_grid, ref position);
-            _grid.SetCellValue(position, player.Value);
+        private Position AIPlay()
+        {
+            return _gameMode.AIPlay(_grid);
         }
 
         #region PRIVATAE

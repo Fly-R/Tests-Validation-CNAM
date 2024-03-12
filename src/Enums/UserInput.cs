@@ -7,5 +7,7 @@
         Played,
         PlayMorpion,
         PlayPuissance4,
+        PlayAgainstAI,
+        PlayAgainstHuman,
     }
 }

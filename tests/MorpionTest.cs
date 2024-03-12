@@ -102,5 +102,19 @@ namespace Tests
             //Assert.False(_morpion.verifEgalite());
             Assert.True(false);
         }
+
+        [Fact]
+        public void AIPlay()
+        {
+            Grid grid = new Grid(2, 2);
+
+            grid.SetCellValue(0,0, GridValue.Player1);
+            grid.SetCellValue(0,1, GridValue.Player1);
+            grid.SetCellValue(1,0, GridValue.Player1);
+
+            Position position = _morpion.AIPlay(grid);
+
+            Assert.Equal(new Position(1,1), position);
+        }
     }
 }

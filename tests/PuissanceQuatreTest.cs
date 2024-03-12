@@ -2,6 +2,8 @@
 using MorpionApp.Enums;
 using MorpionApp.Models;
 
+using System.Security.Cryptography;
+
 namespace Tests
 {
     public class PuissanceQuatreTest
@@ -108,6 +110,28 @@ namespace Tests
             //Assert.False(_puissance4.verifVictoire('X'));
             //Assert.False(_puissance4.verifVictoire('O'));
             //Assert.False(_puissance4.verifEgalite());           
+        }
+
+        [Fact]
+        public void AIPlay()
+        {
+            Grid grid = new Grid(3, 3);
+
+            grid.SetCellValue(2, 0, GridValue.Player1);
+            grid.SetCellValue(2, 1, GridValue.Player1);
+            grid.SetCellValue(2, 2, GridValue.Player1);
+
+            grid.SetCellValue(1, 0, GridValue.Player1);
+            grid.SetCellValue(1, 1, GridValue.Player1);
+            grid.SetCellValue(1, 2, GridValue.Player1);
+            
+            grid.SetCellValue(0, 1, GridValue.Player1);
+            grid.SetCellValue(0, 2, GridValue.Player1);
+
+            Position position = _puissance4.AIPlay(grid);
+
+            Assert.Equal(new Position(0, 0), position);
+
         }
 
     }

@@ -10,11 +10,18 @@ namespace MorpionApp
         public int Rows => GRID_ROWS;
         public int Columns => GRID_COLUMNS;
 
+        public Position AIPlay(Grid grid)
+        {
+            Random random = new Random();
+            IEnumerable<Position> emptyCells = grid.GetEmptyCells();
+            return emptyCells.ElementAt(random.Next(emptyCells.Count()));
+        }
+        
         public bool IsValidInput(Grid grid, Position position)
         {
             return grid.IsCellEmpty(position);
         }
-
+        
         public void ApplyGameRulesBeforePlacement(Grid grid, ref Position position)
         {
         }
@@ -31,6 +38,7 @@ namespace MorpionApp
                 CheckForWin_Vertical(grid, playerSymbol) ||
                 CheckForWin_Diagonal(grid, playerSymbol);
         }
+
 
         #region PRIVATE
         private const int GRID_ROWS = 3;
@@ -70,7 +78,7 @@ namespace MorpionApp
                 grid.GetCellValue(2, 0) == symbol &&
                 grid.GetCellValue(1, 1) == symbol &&
                 grid.GetCellValue(0, 2) == symbol;
-        }
+        }     
 
         #endregion
     }

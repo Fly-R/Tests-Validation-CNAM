@@ -9,6 +9,19 @@ namespace MorpionApp
         public int Rows => GRID_ROWS;
         public int Columns => GRID_COLUMNS;
 
+        public Position AIPlay(Grid grid)
+        {
+            Random random = new Random();
+            do
+            {
+                int column = random.Next(grid.Columns);
+                if (grid.IsCellEmpty(0, column))
+                    return new Position(0, column);
+
+            } while (true);
+
+        }
+
         public void ApplyGameRulesBeforePlacement(Grid grid, ref Position position)
         {
             while (position.Row < grid.Rows - 1)
@@ -39,8 +52,7 @@ namespace MorpionApp
         public bool IsValidInput(Grid grid, Position position)
         {
             return grid.IsCellEmpty(position);
-        }
-
+        }     
         #region PRIVATE
 
         private const int GRID_ROWS = 4;
@@ -108,8 +120,7 @@ namespace MorpionApp
                 if (count >= WINNING_SEQUENCE) return true;
             }
             return false;
-        }
-
+        }       
         #endregion
     }
 }

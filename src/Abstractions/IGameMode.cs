@@ -12,6 +12,7 @@ namespace MorpionApp.Abstractions
         void ApplyGameRulesBeforePlacement(Grid grid, ref Position position);
         bool CheckForWin(Grid grid, GridValue playerSymbol);
         bool CheckForDraw(Grid grid);
+        Position AIPlay(Grid grid);
 
     }
 }

@@ -42,6 +42,26 @@ namespace MorpionApp.UI
             } while (true);
         }
 
+        public UserInput AskForPlayingAgainstAI()
+        {
+            do
+            {
+                Console.WriteLine("Jouer contre une IA [I] ou contre un autre joueur [J] ?");
+                switch (Console.ReadKey(true).Key)
+                {
+                    case ConsoleKey.I:
+                        return UserInput.PlayAgainstAI;
+                    case ConsoleKey.J:
+                        return UserInput.PlayAgainstHuman;
+                    case ConsoleKey.Escape:
+                        return UserInput.Leave;
+                    default:
+                        Console.WriteLine("Entrée invalide.");
+                        break;
+                }
+            } while (true);
+        }
+
         public UserInput AskForReplay()
         {
             do

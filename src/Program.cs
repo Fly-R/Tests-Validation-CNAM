@@ -1,6 +1,8 @@
 ﻿using MorpionApp.Abstractions;
 using MorpionApp.Controller;
+using MorpionApp.Controllers;
 using MorpionApp.Enums;
+using MorpionApp.Models;
 using MorpionApp.UI;
 
 namespace MorpionApp
@@ -20,7 +22,9 @@ namespace MorpionApp
                     _ => throw new NotImplementedException()
                 };
 
-                new GameController(ui, gameMode).Play();
+                List<Player> players = PlayerFactory.CreatePlayers(ui.AskForPlayingAgainstAI());
+
+                new GameController(ui, gameMode, players).Play();
 
             } while (ui.AskForReplay() == UserInput.Replay);
         }
