@@ -19,9 +19,34 @@ namespace CredImmo.Test
         {
             string[] args = ["50000", "9", "0.01"];
 
-            ArgumentParser argumentParser = new ArgumentParser(args);
+            ArgumentParser parser = new ArgumentParser(args);
 
-            Assert.NotNull(argumentParser);
+            Assert.NotNull(parser);
+        }
+
+        [Fact]
+        public void ParseInput_InvalidMontantType()
+        {
+            string[] args = ["abc", "9", "0.01"];
+
+            InvalidCastException exception = Assert.Throws<InvalidCastException>(() => new ArgumentParser(args));
+            Assert.Equal("Le montant de l'emprunt doit être un nombre entier", exception.Message);            
+        }
+        [Fact]
+        public void ParseInput_InvalidDureeType()
+        {
+            string[] args = ["50000", "abc", "0.01"];
+
+            InvalidCastException exception = Assert.Throws<InvalidCastException>(() => new ArgumentParser(args));
+            Assert.Equal("La durée de l'emprunt doit être un nombre entier", exception.Message);            
+        }
+        [Fact]
+        public void ParseInput_InvalidTauxType()
+        {
+            string[] args = ["50000", "9", "abc"];
+
+            InvalidCastException exception = Assert.Throws<InvalidCastException>(() => new ArgumentParser(args));
+            Assert.Equal("Le taux de l'emprunt doit être un nombre décimal", exception.Message);            
         }
     }
 }
