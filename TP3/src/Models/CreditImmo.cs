@@ -6,6 +6,7 @@ namespace CredImmo.App.Models
     {
         public const int EMPRUNT_MIN_VALUE = 50000;
         public const int DUREE_ANNEE_MIN_VALUE = 9;
+        public const int DUREE_ANNEE_MAX_VALUE = 25;
 
         public int MontantEmprunt { get; }        
 
@@ -15,6 +16,8 @@ namespace CredImmo.App.Models
                 throw new EmpruntException();       
             if(dureeEmpruntAnnee < DUREE_ANNEE_MIN_VALUE)
                 throw new DureeInfException();
+            if(dureeEmpruntAnnee > DUREE_ANNEE_MAX_VALUE)
+                throw new DureeSupException();
         }
 
     }
