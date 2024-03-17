@@ -8,7 +8,9 @@ namespace CredImmo.App.Models
         public const int DUREE_ANNEE_MIN_VALUE = 9;
         public const int DUREE_ANNEE_MAX_VALUE = 25;
 
-        public int MontantEmprunt { get; }        
+        public int MontantEmprunt { get; }
+        public int DureeAnnee { get; }
+        public float Taux { get; }
 
         public CreditImmo(int montantEmprunt, int dureeEmpruntAnnee, float taux)
         {
@@ -18,6 +20,10 @@ namespace CredImmo.App.Models
                 throw new DureeInfException();
             if(dureeEmpruntAnnee > DUREE_ANNEE_MAX_VALUE)
                 throw new DureeSupException();
+
+            MontantEmprunt = montantEmprunt;
+            DureeAnnee = dureeEmpruntAnnee;
+            Taux = taux;
         }
 
     }
