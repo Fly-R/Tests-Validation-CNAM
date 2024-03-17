@@ -48,5 +48,22 @@ namespace CredImmo.Test
             InvalidCastException exception = Assert.Throws<InvalidCastException>(() => new ArgumentParser(args));
             Assert.Equal("Le taux de l'emprunt doit être un nombre décimal", exception.Message);            
         }
+
+        [Fact]
+        public void ParseInput_CorrectValues()
+        {
+            const int montant = 50000;
+            const int dureeAnne = 9;
+            const float taux = 0.01f;
+
+            string[] args = [montant.ToString(), dureeAnne.ToString(), taux.ToString()];
+
+            ArgumentParser parser = new ArgumentParser(args);
+
+            Assert.NotNull(parser);
+            Assert.Equal(montant, parser.Montant);
+            Assert.Equal(dureeAnne, parser.Duree);
+            Assert.Equal(taux, parser.Taux);
+        }
     }
 }
