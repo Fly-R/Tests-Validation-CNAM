@@ -13,5 +13,15 @@ namespace CredImmo.Test
 
             Assert.Equal("Le nombre d'arguments doit être égal à 3", exception.Message);
         }
+
+        [Fact]
+        public void ParseInput_ValidCount()
+        {
+            string[] args = ["50000", "9", "0.01"];
+
+            ArgumentParser argumentParser = new ArgumentParser(args);
+
+            Assert.NotNull(argumentParser);
+        }
     }
 }
