@@ -4,27 +4,28 @@ namespace CredImmo.App.Models
 {
     public sealed class CreditImmo
     {
-        public const int EMPRUNT_MIN_VALUE = 50000;
-        public const int DUREE_ANNEE_MIN_VALUE = 9;
-        public const int DUREE_ANNEE_MAX_VALUE = 25;
+        private const int MONTHS_PER_YEAR = 12;
 
-        public int MontantEmprunt { get; }
-        public int DureeAnnee { get; }
+        public const int EMPRUNT_MIN = 50000;
+        public const int DUREE_MOIS_MIN = 9*MONTHS_PER_YEAR;
+        public const int DUREE_MOIS_MAX = 25*MONTHS_PER_YEAR;
+
+        public int Montant { get; }        
+        public int Duree { get; }
         public float Taux { get; }
 
-        public int DureeMois => DureeAnnee * 12;
 
-        public CreditImmo(int montantEmprunt, int dureeEmpruntAnnee, float taux)
+        public CreditImmo(int montantEmprunt, int dureeEmprunt, float taux)
         {
-            if(montantEmprunt < EMPRUNT_MIN_VALUE)            
+            if(montantEmprunt < EMPRUNT_MIN)            
                 throw new EmpruntException();       
-            if(dureeEmpruntAnnee < DUREE_ANNEE_MIN_VALUE)
+            if(dureeEmprunt < DUREE_MOIS_MIN)
                 throw new DureeInfException();
-            if(dureeEmpruntAnnee > DUREE_ANNEE_MAX_VALUE)
+            if(dureeEmprunt > DUREE_MOIS_MAX)
                 throw new DureeSupException();
 
-            MontantEmprunt = montantEmprunt;
-            DureeAnnee = dureeEmpruntAnnee;
+            Montant = montantEmprunt;
+            Duree = dureeEmprunt;
             Taux = taux;
         }
 
