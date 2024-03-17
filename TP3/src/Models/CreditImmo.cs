@@ -12,6 +12,8 @@ namespace CredImmo.App.Models
         public int DureeAnnee { get; }
         public float Taux { get; }
 
+        public int DureeMois => DureeAnnee * 12;
+
         public CreditImmo(int montantEmprunt, int dureeEmpruntAnnee, float taux)
         {
             if(montantEmprunt < EMPRUNT_MIN_VALUE)            
