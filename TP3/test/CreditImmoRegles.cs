@@ -1,4 +1,4 @@
-using CredImmo.App.Exceptions;
+using CredImmo.App;
 using CredImmo.App.Models;
 
 namespace CredImmo.Test
@@ -12,9 +12,8 @@ namespace CredImmo.Test
             const int dureeEmpruntAnnee = CreditImmo.DUREE_MOIS_MIN;
             const float taux = 0.01f;
 
-            Exception exception = Record.Exception(() => new CreditImmo(montantEmprunt, dureeEmpruntAnnee, taux));
-
-            Assert.Null(exception);
+            Assert.True(Validator.IsValid(new CreditImmo(montantEmprunt, dureeEmpruntAnnee, taux), out string outputMessage));
+            Assert.Equal(string.Empty, outputMessage);
         }
 
         [Fact]
@@ -24,8 +23,8 @@ namespace CredImmo.Test
             const int dureeEmpruntAnnee = CreditImmo.DUREE_MOIS_MIN;
             const float taux = 0.01f;
 
-            EmpruntException exception = Assert.Throws<EmpruntException>(() => new CreditImmo(montantEmprunt, dureeEmpruntAnnee, taux));
-            Assert.Equal("Le montant de l'emprunt doit être >= 50 000€", exception.Message);
+            Assert.False(Validator.IsValid(new CreditImmo(montantEmprunt, dureeEmpruntAnnee, taux), out string outputMessage));
+            Assert.Equal("Le montant de l'emprunt doit être >= 50 000€", outputMessage);
         }
 
         [Fact]
@@ -35,9 +34,8 @@ namespace CredImmo.Test
             const int dureeEmpruntAnnee = CreditImmo.DUREE_MOIS_MIN;
             const float taux = 0.01f;
 
-            Exception exception = Record.Exception(() => new CreditImmo(montantEmprunt, dureeEmpruntAnnee, taux));
-
-            Assert.Null(exception);
+            Assert.True(Validator.IsValid(new CreditImmo(montantEmprunt, dureeEmpruntAnnee, taux), out string outputMessage));
+            Assert.Equal(string.Empty, outputMessage);
         }
 
         [Fact]
@@ -47,8 +45,8 @@ namespace CredImmo.Test
             const int dureeEmpruntAnnee = CreditImmo.DUREE_MOIS_MIN - 1;
             const float taux = 0.01f;
 
-            DureeInfException exception = Assert.Throws<DureeInfException>(() => new CreditImmo(montantEmprunt, dureeEmpruntAnnee, taux));
-            Assert.Equal("La durée de l'emprunt doit être >= 9 ans", exception.Message);
+            Assert.False(Validator.IsValid(new CreditImmo(montantEmprunt, dureeEmpruntAnnee, taux), out string outputMessage));
+            Assert.Equal("La durée de l'emprunt doit être >= 9 ans", outputMessage);
         }
         
         [Fact]
@@ -58,8 +56,30 @@ namespace CredImmo.Test
             const int dureeEmpruntAnnee = CreditImmo.DUREE_MOIS_MAX + 1;
             const float taux = 0.01f;
 
-            DureeSupException exception = Assert.Throws<DureeSupException>(() => new CreditImmo(montantEmprunt, dureeEmpruntAnnee, taux));
-            Assert.Equal("La durée de l'emprunt doit être <= 25 ans", exception.Message);
+            Assert.False(Validator.IsValid(new CreditImmo(montantEmprunt, dureeEmpruntAnnee, taux), out string outputMessage));
+            Assert.Equal("La durée de l'emprunt doit être <= 25 ans", outputMessage);
+        }
+
+        [Fact]
+        public void CreditImmoRegles_Taux_Correct()
+        {
+            const int montantEmprunt = CreditImmo.EMPRUNT_MIN;
+            const int dureeEmpruntAnnee = CreditImmo.DUREE_MOIS_MAX;
+            const float taux = 0.00f;
+
+            Assert.True(Validator.IsValid(new CreditImmo(montantEmprunt, dureeEmpruntAnnee, taux), out string outputMessage));
+            Assert.Equal(string.Empty, outputMessage);
+        }
+
+        [Fact]
+        public void CreditImmoRegles_Taux_InferieurLimite()
+        {
+            const int montantEmprunt = CreditImmo.EMPRUNT_MIN;
+            const int dureeEmpruntAnnee = CreditImmo.DUREE_MOIS_MAX;
+            const float taux = -0.01f;
+
+            Assert.False(Validator.IsValid(new CreditImmo(montantEmprunt, dureeEmpruntAnnee, taux), out string outputMessage));
+            Assert.Equal("Le taux de l'emprunt doit être >= 0", outputMessage);
         }
     }
 }

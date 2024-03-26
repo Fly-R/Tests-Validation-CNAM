@@ -1,6 +1,4 @@
-﻿using CredImmo.App.Exceptions;
-
-namespace CredImmo.App.Models
+﻿namespace CredImmo.App.Models
 {
     public sealed class CreditImmo
     {
@@ -17,13 +15,6 @@ namespace CredImmo.App.Models
 
         public CreditImmo(int montantEmprunt, int dureeEmprunt, float taux)
         {
-            if(montantEmprunt < EMPRUNT_MIN)            
-                throw new EmpruntException();       
-            if(dureeEmprunt < DUREE_MOIS_MIN)
-                throw new DureeInfException();
-            if(dureeEmprunt > DUREE_MOIS_MAX)
-                throw new DureeSupException();
-
             Montant = montantEmprunt;
             Duree = dureeEmprunt;
             Taux = taux;
