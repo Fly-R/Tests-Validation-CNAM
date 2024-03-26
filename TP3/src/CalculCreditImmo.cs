@@ -2,14 +2,12 @@
 
 namespace CredImmo.App
 {
-    public sealed class CalculCreditImmo(CreditImmo creditImmo)
+    public sealed class CalculCreditImmo
     {
-        private readonly CreditImmo _creditImmo = creditImmo;
-
-        public CreditImmoResultat Calcul()
+        public static CreditImmoResultat Calcul(CreditImmo creditImmo)
         {
             List<PaiementMensuel> mensualites = [];
-            for (int mois = 1; mois <= _creditImmo.Duree; mois++)
+            for (int mois = 1; mois <= creditImmo.Duree; mois++)
             {
                 mensualites.Add(new PaiementMensuel(mois, 0, 0));             
             }

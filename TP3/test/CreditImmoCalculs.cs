@@ -12,9 +12,8 @@ namespace CredImmo.Test
         public void CalculCredit_NombreMensualite(int month)
         {
             CreditImmo input = new CreditImmo(50000, month, 1.2f);
-
-            CalculCreditImmo calcul = new CalculCreditImmo(input);
-            CreditImmoResultat result = calcul.Calcul();           
+            
+            CreditImmoResultat result = CalculCreditImmo.Calcul(input);           
 
             Assert.Equal(month, result.PaiementsMensuel.Count);
 
