@@ -6,13 +6,26 @@ namespace CredImmo.App
     {
         public static CreditImmoResultat Calcul(CreditImmo creditImmo)
         {
+            int mensualite = CalculMensualite(creditImmo.Montant, creditImmo.Taux, creditImmo.Duree);
+
+            int rembourse = 0;
+            int restant = mensualite * creditImmo.Duree;
+
             List<PaiementMensuel> mensualites = [];
             for (int mois = 1; mois <= creditImmo.Duree; mois++)
             {
-                mensualites.Add(new PaiementMensuel(mois,0, 0, 0));             
+                restant -= mensualite;
+                rembourse += mensualite;
+                mensualites.Add(new PaiementMensuel(mois, mensualite, rembourse, restant));             
             }
 
             return new CreditImmoResultat(0, mensualites);            
+        }
+
+        private static int CalculMensualite(int montant, float taux, int duree)
+        {
+            float tauxAnnuel = taux / 100 / 12;
+            return (int)Math.Round((montant * tauxAnnuel) / (1 - (float)Math.Pow(1 + tauxAnnuel, -duree)), 2);
         }
     }
 }
