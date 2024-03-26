@@ -37,5 +37,20 @@ namespace CredImmo.Test
             Assert.Equal(0, result.PaiementsMensuel.Last().Restant);
 
         }
+
+        [Theory]
+        [InlineData(500_000, 4 * 12, 1.2f, 12_304)]
+        [InlineData(50_000, 2 * 12, 2, 1_048)]
+        [InlineData(1_000_000, 10 * 12, 0.5f, 25_400)]
+        [InlineData(2_500_000, 25 * 12, 7, 2_800_700)]
+        public void CalculCredit_ValeurTotalCorrect(int emprunt, int mois, float taux, int total)
+        {
+            CreditImmo input = new CreditImmo(emprunt, mois, taux);
+
+            CreditImmoResultat result = CalculCreditImmo.Calcul(input);
+
+            Assert.Equal(total, result.Total);
+
+        }
     }
 }

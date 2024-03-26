@@ -19,7 +19,8 @@ namespace CredImmo.App
                 mensualites.Add(new PaiementMensuel(mois, mensualite, rembourse, restant));             
             }
 
-            return new CreditImmoResultat(0, mensualites);            
+            int total = mensualite * creditImmo.Duree - creditImmo.Montant;
+            return new CreditImmoResultat(total, mensualites);            
         }
 
         private static int CalculMensualite(int montant, float taux, int duree)
