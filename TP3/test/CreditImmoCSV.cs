@@ -73,5 +73,17 @@ namespace CredImmo.Test
 
             File.Delete(path);
         }
+
+        [Fact]
+        public void CSVWriter_CreditImmoResultat_NomFichier()
+        {
+            CreditImmoResultat resultat = new CreditImmoResultat(42, []);
+
+            string path = CSVWriter.Write(resultat);
+
+            Assert.Equal($"creditImmo_{DateTime.Now:yyyyMMddHHmmss}.csv", path);
+
+            File.Delete(path);
+        }
     }
 }
