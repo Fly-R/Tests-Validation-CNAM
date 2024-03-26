@@ -14,5 +14,10 @@
             Rembourse = rembourse;
             Restant = restant;
         }
+
+        public string ToCSV()
+        {
+            return $"{Mois};{Montant};{Rembourse};{Restant};";
+        }
     }
 }
