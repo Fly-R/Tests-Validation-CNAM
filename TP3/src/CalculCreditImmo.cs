@@ -9,7 +9,7 @@ namespace CredImmo.App
             List<PaiementMensuel> mensualites = [];
             for (int mois = 1; mois <= creditImmo.Duree; mois++)
             {
-                mensualites.Add(new PaiementMensuel(mois, 0, 0));             
+                mensualites.Add(new PaiementMensuel(mois,0, 0, 0));             
             }
 
             return new CreditImmoResultat(0, mensualites);            

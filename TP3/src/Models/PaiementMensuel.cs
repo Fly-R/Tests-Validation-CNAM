@@ -3,12 +3,14 @@
     public sealed class PaiementMensuel
     {
         public int Mois { get; }
-        public float Rembourse { get; }
-        public float Restant { get; }
+        public int Montant { get; }
+        public int Rembourse { get; }
+        public int Restant { get; }
 
-        public PaiementMensuel(int mois, float rembourse, float restant)
+        public PaiementMensuel(int mois, int montant, int rembourse, int restant)
         {
             Mois = mois;
+            Montant = montant;
             Rembourse = rembourse;
             Restant = restant;
         }
