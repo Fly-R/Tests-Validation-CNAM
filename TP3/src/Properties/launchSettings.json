@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CredImmo.App": {
+      "commandName": "Project",
+      "commandLineArgs": "500000 108 1.2"
+    }
+  }
+}
